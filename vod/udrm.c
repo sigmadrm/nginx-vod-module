@@ -8,6 +8,7 @@ enum {
 	DRM_INFO_PARAM_KEY,
 	DRM_INFO_PARAM_KEY_ID,
 	DRM_INFO_PARAM_PSSH,
+	DRM_INFO_PARAM_URI,
 
 	DRM_INFO_PARAM_COUNT
 };
@@ -25,6 +26,7 @@ static json_object_key_def_t drm_info_keys_def[] = {
 	{ vod_string("key"),	VOD_JSON_STRING,	DRM_INFO_PARAM_KEY },
 	{ vod_string("key_id"),	VOD_JSON_STRING,	DRM_INFO_PARAM_KEY_ID },
 	{ vod_string("pssh"),	VOD_JSON_ARRAY,		DRM_INFO_PARAM_PSSH },
+	{ vod_string("uri"),	VOD_JSON_STRING,	DRM_INFO_PARAM_URI },
 	{ vod_null_string, 0, 0}
 };
 
@@ -128,6 +130,17 @@ udrm_parse_response(
 	else
 	{
 		result->iv_set = FALSE;
+	}
+
+	if (drm_info_values[DRM_INFO_PARAM_URI] != NULL)
+	{
+		vod_memzero(result->uri, DRM_URI_SIZE);
+		vod_memcpy(result->uri, drm_info_values[DRM_INFO_PARAM_URI]->v.str.data, drm_info_values[DRM_INFO_PARAM_URI]->v.str.len);
+		result->uri_set = TRUE;
+	}
+	else
+	{
+		result->uri_set = FALSE;
 	}
 
 	if (drm_info_values[DRM_INFO_PARAM_PSSH] == NULL)

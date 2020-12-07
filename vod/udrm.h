@@ -6,6 +6,7 @@
 #define DRM_KEY_SIZE (16)
 #define DRM_KID_SIZE (16)
 #define DRM_IV_SIZE (16)
+#define DRM_URI_SIZE (256)
 
 // typedefs
 typedef struct {
@@ -23,7 +24,9 @@ typedef struct {
 	u_char key_id[DRM_KID_SIZE];
 	u_char key[DRM_KEY_SIZE];
 	u_char iv[DRM_IV_SIZE];
+	u_char uri[DRM_URI_SIZE];
 	bool_t iv_set;
+	bool_t uri_set;
 	drm_system_info_array_t pssh_array;
 } drm_info_t;
 

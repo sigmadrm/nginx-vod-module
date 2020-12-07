@@ -158,7 +158,12 @@ ngx_http_vod_hls_init_encryption_params(
 	{
 		drm_info = sequence->drm_info;
 		encryption_params->key = drm_info->key;
-
+		if (drm_info->uri_set)
+		{
+			encryption_params->key_uri.len = vod_strlen(drm_info->uri);
+			encryption_params->key_uri.data = vod_alloc(submodule_context->request_context.pool, encryption_params->key_uri.len);
+			vod_memcpy(encryption_params->key_uri.data, drm_info->uri, encryption_params->key_uri.len);
+		}
 		if (drm_info->iv_set)
 		{
 			encryption_params->iv = drm_info->iv;
@@ -354,7 +359,7 @@ ngx_http_vod_hls_handle_index_playlist(
 		}
 		else
 		{
-			encryption_params.key_uri.len = 0;
+			//encryption_params.key_uri.len = 0;
 		}
 	}
 #else
